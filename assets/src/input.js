@@ -673,6 +673,12 @@ import { sprintf } from 'sprintf-js';
     },
 
     openModal: function(data) {
+      // Integrations can take over with the aiarc/request_crop filter, and open the
+      // cropper later by calling openModal() with data.skipRequestCrop = true
+      if (!data.skipRequestCrop && acf.apply_filters('aiarc/request_crop', false, data, this)) {
+        return;
+      }
+
       var url = data.attachment.attributes.url;
       var id = data.attachment.attributes.id;
       field = data.field;
